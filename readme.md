@@ -15,8 +15,8 @@
 
 1. Clone the repository:
    ```sh
-   git clone <repository-url>
-   cd yolo_app
+   git clone https://github.com/Devansh-Kumar-Saini/Train-Track-Defect-Detection-System.git
+   cd Train-Track-Defect-Detection-System
    ```
 
 # Optional (Virtual Environment)
