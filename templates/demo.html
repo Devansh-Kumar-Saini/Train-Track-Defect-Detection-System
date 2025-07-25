@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RailTrack Inspector - Demo</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo">RailTrack Inspector</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/technical">Technical</a>
+            <a href="/demo" class="active">Demo</a>
+            <a href="/about">About</a>
+        </div>
+    </nav>
+
+    <!-- DEMO SECTION -->
+    <section class="demo-section">
+        <div class="demo-container">
+            <div class="govt-header">
+                <img src="/static/IMAGES/embelemno.png" alt="Government Emblem" class="govt-emblem">
+                <h1>Ministry of Railways</h1>
+                <h2>Track Defect Detection Demo</h2>
+            </div>
+
+            <div class="demo-content">
+                <div class="upload-container">
+                    <h3>Upload Track Image</h3>
+                    <p>Upload an image of railway track to detect potential defects and safety issues</p>
+                    <div class="upload-area" id="dropZone">
+                        <div class="upload-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <p>Drag and drop your image here</p>
+                        <p class="upload-subtext">or</p>
+                        <button class="upload-btn">Choose File</button>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <div class="results-container" id="resultsContainer" style="display: none;">
+                    <h3>Analysis Results</h3>
+                    <div class="image-comparison">
+                        <div class="image-box">
+                            <h4>Original Image</h4>
+                            <img id="originalImage" src="" alt="Original Track Image">
+                        </div>
+                        <div class="image-box">
+                            <h4>Detected Defects</h4>
+                            <img id="resultImage" src="" alt="Analysis Result">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing track image...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .demo-section {
+            padding: 120px 20px 60px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .govt-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid #003366;
+        }
+
+        .govt-emblem {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #cc0000;
+        }
+
+        .govt-header h1 {
+            color: #003366;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .govt-header h2 {
+            color: #cc0000;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .demo-content {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #003366;
+        }
+
+        .upload-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-container h3 {
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .upload-container p {
+            color: #1a365d;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 2px dashed #003366;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #cc0000;
+            background: #f8fafc;
+        }
+
+        .upload-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            color: #003366;
+        }
+
+        .upload-subtext {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .upload-btn {
+            background: #003366;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .image-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .image-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #003366;
+        }
+
+        .image-box h4 {
+            color: #003366;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .defects-list {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #003366;
+        }
+
+        .defects-list h4 {
+            color: #003366;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .defects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .defect-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #003366;
+        }
+
+        .defect-item h5 {
+            color: #cc0000;
+            margin-bottom: 10px;
+        }
+
+        .defect-item p {
+            color: #1a365d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #cc0000;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .image-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .govt-header {
+                padding: 20px;
+            }
+
+            .govt-header h1 {
+                font-size: 28px;
+            }
+
+            .govt-header h2 {
+                font-size: 20px;
+            }
+
+            .demo-content {
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const originalImage = document.getElementById('originalImage');
+            const resultImage = document.getElementById('resultImage');
+
+            // Handle file selection
+            fileInput.addEventListener('change', handleFileSelect);
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            // Handle drag and drop
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = '#4338ca';
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.style.borderColor = '#4f46e5';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.style.borderColor = '#4f46e5';
+                const files = e.dataTransfer.files;
+                if (files.length) handleFile(files[0]);
+            });
+
+            function handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) handleFile(file);
+            }
+
+            function handleFile(file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload an image file');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalImage.src = e.target.result;
+                    resultsContainer.style.display = 'block';
+                    loadingSpinner.style.display = 'block';
+
+                    // Create FormData to send the file
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    // Make API call to the predict endpoint
+                    fetch('/predict/', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Convert blob to URL and set as result image
+                        resultImage.src = 'data:image/jpeg;base64,' + data.image;
+                        loadingSpinner.style.display = 'none';
+
+                        // Show defect message
+                        let msg = "";
+                        if (data.defect_found) {
+                            msg = `Defect found! Highest confidence: ${data.confidence}%`;
+                        } else {
+                            msg = "No defect found.";
+                        }
+                        alert(msg); // Display the message or handle it as needed
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        loadingSpinner.style.display = 'none';
+                        alert('Error processing image. Please try again.');
+                    });
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
