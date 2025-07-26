@@ -1,4 +1,14 @@
 ## Project Structure
+yolo_app/
+├── static/                     # Static files (CSS, JS, images, etc.)
+├── templates/                  # HTML templates for rendering views
+├── venvAIML/                   # Python virtual environment
+├── .DS_Store                   # macOS system file (can be ignored or deleted)
+├── .gitignore                  # Git ignore rules
+├── app.py                      # Main application script
+├── best.pt                    # YOLO model file
+├── readme.md                   # Project documentation
+└── requirements.txt            # Python dependencies
 
 ## Features
 
