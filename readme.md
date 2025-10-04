@@ -1,6 +1,5 @@
 ## Project Structure
 
-yolo_app/
 ├── static/ # Static files (CSS, JS, images, etc.)
 ├── templates/ # HTML templates for rendering views
 ├── venvAIML/ # Python virtual environment
